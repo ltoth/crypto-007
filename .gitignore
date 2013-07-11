@@ -1,0 +1,10 @@
+# https://github.com/github/gitignore/blob/master/Haskell.gitignore
+dist
+cabal-dev
+*.o
+*.hi
+*.chi
+*.chs.h
+.virthualenv
+
+ps1-q08
