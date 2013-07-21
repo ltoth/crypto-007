@@ -1,27 +1,31 @@
 {-# LANGUAGE ViewPatterns #-}  
 import Data.Int
+import Data.Hex
 import System.Environment
-import System.Directory
-import System.IO
 import Crypto.Hash.SHA256
+import qualified Data.ByteString as S
 import qualified Data.ByteString.Lazy as B
 
 blockSize = 1024
 
-main = do
-  (fileName:_) <- getArgs
-  recursiveHash fileName
+--main = do
+--  (fileName:_) <- getArgs
+--  h0 <- recursiveHash fileName
+--  putStrLn $ hex h0
 
-recursiveHash file = do
-  contents <- B.readFile file
-  B.foldrChunks recursiveHash' B.empty contents
+recursiveHash f = do
+  contents <- B.readFile f
+  return $ foldr recursiveHash' S.empty $ B.toChunks contents
 
 recursiveHash' c h =
-  let cs = chunk blockSize c
-  in  foldr (\x acc -> hashlazy $ B.append x acc) h cs
+  let bs = splitEvery blockSize c
+  in  foldr (\x acc -> hash $ S.append x acc) h bs
     
+-- based on chunk :: Int -> [a] -> [[a]] from
+-- http://www.haskell.org/haskellwiki/Data.List.Split
+
 -- | split at regular intervals
-chunk :: Int64 -> B.ByteString -> [B.ByteString]
-chunk _ (B.uncons -> Nothing) = [B.empty]
-chunk n xs = y1 : chunk n y2
-  where (y1, y2) = B.splitAt n xs
+splitEvery :: Int -> S.ByteString -> [S.ByteString]
+splitEvery _ (S.uncons -> Nothing) = [S.empty]
+splitEvery n xs = y1 : splitEvery n y2
+  where (y1, y2) = S.splitAt n xs
