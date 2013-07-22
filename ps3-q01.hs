@@ -1,13 +1,14 @@
 {-# LANGUAGE ViewPatterns #-}  
-import Data.Int
 import Data.Char
 import Data.Hex
 import System.Environment
 import Crypto.Hash.SHA256
 import qualified Data.ByteString.Char8 as S
 
+blockSize :: Int
 blockSize = 1024
 
+main :: IO ()
 main = do
   (fileName:_) <- getArgs
   h0 <- recursiveHash fileName
@@ -23,7 +24,7 @@ recursiveHash' c =
   let bs = splitEvery blockSize c
   in  foldr (\x acc -> hash $ S.append x acc) S.empty bs
     
-toHex :: S.ByteString -> [Char]
+toHex :: S.ByteString -> String
 toHex b = map toLower $ hex $ S.unpack b
 
 -- based on chunk :: Int -> [a] -> [[a]] from
