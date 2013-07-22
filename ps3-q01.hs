@@ -25,7 +25,8 @@ recursiveHash' c =
   in  foldr (\x acc -> hash $ S.append x acc) S.empty bs
     
 toHex :: S.ByteString -> String
-toHex b = map toLower $ hex $ S.unpack b
+toHex b = map toLower $ toHex' b
+  where toHex' = hex . S.unpack
 
 -- based on chunk :: Int -> [a] -> [[a]] from
 -- http://www.haskell.org/haskellwiki/Data.List.Split
