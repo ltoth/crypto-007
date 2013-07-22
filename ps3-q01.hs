@@ -22,7 +22,7 @@ recursiveHash f = do
 recursiveHash' :: S.ByteString -> S.ByteString
 recursiveHash' c =
   let bs = splitEvery blockSize c
-  in  foldr (\x acc -> hash $ S.append x acc) S.empty bs
+  in  foldr (\b a -> hash $ S.append b a) S.empty bs
     
 toHex :: S.ByteString -> String
 toHex b = map toLower $ toHex' b
