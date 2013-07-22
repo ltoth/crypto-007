@@ -16,12 +16,12 @@ main = do
 recursiveHash :: FilePath -> IO S.ByteString
 recursiveHash f = do
   contents <- S.readFile f
-  return $ recursiveHash' contents S.empty
+  return $ recursiveHash' contents
 
-recursiveHash' :: S.ByteString -> S.ByteString -> S.ByteString
-recursiveHash' c h =
+recursiveHash' :: S.ByteString -> S.ByteString
+recursiveHash' c =
   let bs = splitEvery blockSize c
-  in  foldr (\x acc -> hash $ S.append x acc) h bs
+  in  foldr (\x acc -> hash $ S.append x acc) S.empty bs
     
 toHex :: S.ByteString -> [Char]
 toHex b = map toLower $ hex $ S.unpack b
