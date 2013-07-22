@@ -13,14 +13,17 @@ main = do
   h0 <- recursiveHash fileName
   putStrLn $ toHex h0
 
+recursiveHash :: FilePath -> IO S.ByteString
 recursiveHash f = do
   contents <- S.readFile f
   return $ recursiveHash' contents S.empty
 
+recursiveHash' :: S.ByteString -> S.ByteString -> S.ByteString
 recursiveHash' c h =
   let bs = splitEvery blockSize c
   in  foldr (\x acc -> hash $ S.append x acc) h bs
     
+toHex :: S.ByteString -> [Char]
 toHex b = map toLower $ hex $ S.unpack b
 
 -- based on chunk :: Int -> [a] -> [[a]] from
