@@ -1,5 +1,6 @@
 import Data.Bits
 import Control.Monad
+import Control.Monad.State
 import Network.HTTP
 import XorUtils
 import Data.List.Split (chunksOf)
@@ -21,7 +22,11 @@ m0 = [(0,1,32),(0,2,115),(0,3,100),(0,4,114),(0,5,111),(0,6,87),(0,7,32),(0,8,99
 m1 :: [(BlockIdx, WordIdx, Int)]
 m1 = [(1,1,115),(1,2,79),(1,3,32),(1,4,104),(1,5,115),(1,6,105),(1,7,109),(1,8,97),(1,9,101),(1,10,117),(1,11,113),(1,12,83),(1,13,32),(1,14,101),(1,15,114),(1,16,97)]
 
+m2 :: [(BlockIdx, WordIdx, Int)]
+m2 = [(2,1,9),(2,2,9),(2,3,9),(2,4,9),(2,5,9),(2,6,9),(2,7,9),(2,8,9),(2,9,9),(2,10,101),(2,11,103),(2,12,97),(2,13,114),(2,14,102),(2,15,105),(2,16,115)]
 --ks = [(2,1,9),(2,2,9),(2,3,9),(2,4,9),(2,5,9),(2,6,9),(2,7,9),(2,8,9),(2,9,0)]
+
+d0 b k p = getPlain p b (setKnown p k (take (b+2) cs))
 
 third (_,_,x) = x
 
@@ -64,6 +69,7 @@ query q = do
 
 oracle :: (Int, Int, Int) -> Bool
 oracle (4,0,4) = True
+oracle (2,0,0) = True
 oracle (_,_,_) = False
 
 getCode :: String -> IO ResponseCode
