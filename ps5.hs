@@ -9,11 +9,12 @@ gb = powm g b p
 
 -- 375374217830
 main :: IO ()
-main = print $ (head . map getX) findX1X2
+main = print $ getX findX1X2
 
-getX :: (Maybe Integer, Integer) -> Integer
-getX (Just x1, x0) = x0 * b + x1
-getX (_,_) = error "Could not find discrete log"
+getX :: [(Maybe Integer, Integer)] -> Maybe Integer
+getX ((Just x1, x0):xs) = Just $ x0 * b + x1
+getX (x:xs) = Nothing
+getX [] = Nothing
 
 -- [(Just 787046,357984)]
 findX1X2 :: [(Maybe Integer, Integer)]
