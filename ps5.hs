@@ -9,17 +9,17 @@ gb = powm g b p
 
 -- 375374217830
 main :: IO ()
-main = print $ getX findX1X2
+main = print $ getX findX0X1
 
-getX :: [(Maybe Integer, Integer)] -> Maybe Integer
-getX ((Just x1, x0):xs) = Just $ x0 * b + x1
+getX :: [(Integer, Maybe Integer)] -> Maybe Integer
+getX ((x0, Just x1):xs) = Just $ x0 * b + x1
 getX (x:xs) = Nothing
 getX [] = Nothing
 
 -- [(Just 787046,357984)]
-findX1X2 :: [(Maybe Integer, Integer)]
-findX1X2 = let lhsMap = M.fromList [(lhs x1, x1) | x1 <- [0..b]]
-           in [(M.lookup r lhsMap, x2) | x2 <- [0..b], let r = rhs x2, r `M.member` lhsMap]
+findX0X1 :: [(Integer, Maybe Integer)]
+findX0X1 = let lhsMap = M.fromList [(lhs x1, x1) | x1 <- [0..b]]
+           in [(x0, M.lookup r lhsMap) | x0 <- [0..b], let r = rhs x0, r `M.member` lhsMap]
 
 -- Compute h / g^x_1 in Z_p
 lhs :: Integer -> Maybe Integer
