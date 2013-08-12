@@ -18,9 +18,9 @@ a = head $ [ a | a <- [a0..], (x a)^2 == a^2 - n ]
 p = a - x a
 q = a + x a
 
-phi_n = n - p - q + 1
+φ_n = n - p - q + 1
 
-d = fromMaybe 0 $ e `modInv` phi_n
+d = fromMaybe 0 $ e `modInv` φ_n
 
 m :: Integer
 m = powm c d n
